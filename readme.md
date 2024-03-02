@@ -43,24 +43,37 @@ The API will be accessible at `http://127.0.0.1:8000/`.
 
 Once the server is running, you can test the API endpoints using tools like Postman or cURL. Here is the sequence to follow for testing:
 
-1. **User Registration** : Register a user using the `/signup/` endpoint.
-2. **Authentication** : Obtain an authentication token using the `/api-token-auth/` endpoint with the registered user's credentials.
+1. **User Registration** : Register a user using the `/api/signup/` endpoint.
+2. **Authentication** : Obtain an authentication token using the `/api/api-token-auth/` endpoint with the registered user's credentials.
 3. **Survey Operations** :
 
-* Create a survey using the `/surveys/` endpoint.
-* Retrieve, update, or delete surveys using the `/surveys/<survey_id>/` endpoint.
+* Create a survey using the `/api/surveys/` endpoint.
+* Retrieve, update, or delete surveys using the `/api/surveys/<survey_id>/` endpoint.
 
-1. **Question Operations** :
+4. **Question Operations** :
 
-* Create questions using the `/questions/` endpoint.
-* Retrieve, update, or delete questions using the `/questions/<question_id>/` endpoint.
+* Create questions using the `/api/questions/` endpoint.
+* Retrieve, update, or delete questions using the `/api/questions/<question_id>/` endpoint.
 
-1. **Survey Question Operations** :
+5. **Question Choice Operations** :
 
-* Add questions to surveys using the `/survey-questions/` endpoint.
-* Retrieve, update, or delete survey questions using the `/survey-questions/<survey_question_id>/` endpoint.
+* Add questions to surveys using the `/api/question-choices/` endpoint.
+* Retrieve, update, or delete question choices using the `/api/question-choices/<question_choice_id>/` endpoint.
+* Retrieve questions with their choices using the `/api/question-with-choices/<question_id>/` endpoint.
 
-1. **Survey Question Answer Operations** :
+6. **Survey Question Operations** :
 
-* Record answers to survey questions using the `/survey-question-answers/` endpoint.
-* Retrieve, update, or delete survey question answers using the `/survey-question-answers/<survey_question_answer_id>/` endpoint.
+* Add questions to surveys using the `/api/survey-questions/` endpoint.
+* Retrieve, update, or delete survey questions using the `/api/survey-questions/<survey_question_id>/` endpoint.
+
+7. **Survey Question Answer Operations** :
+
+* Record answers to survey questions using the `/api/survey-question-answers/` endpoint.
+* Retrieve, update, or delete survey question answers using the `/api/survey-question-answers/<survey_question_answer_id>/` endpoint.
+* Retrieve answers for a specific question against question id using the `/api/survey-question-answers/get-question/<int:question_id>/` endpoint.
+
+
+## NOTE
+* For further clarification visit postman collection:
+  
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/27253326-a1ce3ab2-27c0-4928-8e9a-33b30ef46dd6?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D27253326-a1ce3ab2-27c0-4928-8e9a-33b30ef46dd6%26entityType%3Dcollection%26workspaceId%3Dc172560e-d4a8-456e-b702-879831cbc947)

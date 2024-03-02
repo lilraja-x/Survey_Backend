@@ -28,11 +28,6 @@ class Survey(models.Model):
     def __str__(self):
         return self.name
 
-    def clean(self):
-        question_count = self.surveyquestion_set.count()
-
-        if question_count < 5 or question_count > 10:
-            raise ValidationError('A survey must contain between 5 and 10 questions.')
         
 class SurveyQuestion(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)

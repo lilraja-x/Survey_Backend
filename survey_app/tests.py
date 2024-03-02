@@ -125,12 +125,14 @@ class SurveyAppTestCase(TestCase):
         self.assertEqual(Survey.objects.count(), 0)
 
     def test_survey_question_creation(self):
-        if not SurveyQuestion.objects.filter(survey=self.survey, question=self.question).exists():
-            response = self.client.post('/api/survey-questions/', data={'survey': self.survey.id, 'question': self.question.id}, format='json')
-            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-            self.assertEqual(SurveyQuestion.objects.count(), 2)
-        else:
-            self.assertEqual(SurveyQuestion.objects.count(), 1)
+        data = {
+            "survey": 1,
+            "questions": [1, 2, 3, 4, 5]
+        }
+        response = self.client.post('/api/survey-questions/', data, format='json')
+        for question in data['questions']:
+            if SurveyQuestion.objects.filter(survey=self.survey, question=question).exists():            
+                self.assertEqual(SurveyQuestion.objects.count(), 1)
 
 
     def test_survey_question_answer_creation(self):

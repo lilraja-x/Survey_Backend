@@ -122,17 +122,25 @@ class SurveyQuestionListCreateAPIView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         try:
             survey_id = request.data.get('survey')
-            question_id = request.data.get('question')
-            if not Survey.objects.filter(pk=survey_id).exists():
-                return Response({"error": "Survey does not exist."}, status=status.HTTP_404_NOT_FOUND)
-            if not Question.objects.filter(pk=question_id).exists():
-                return Response({"error": "Question does not exist."}, status=status.HTTP_404_NOT_FOUND)
+            questions = request.data.get('questions', [])
+            
+            # Check if the number of questions is between 5 and 10
+            if not 5 <= len(questions) <= 10:
+                return Response({"error": "Number of questions must be between 5 and 10."}, status=status.HTTP_400_BAD_REQUEST)
+            
+            for question_id in questions:
+                if not Survey.objects.filter(pk=survey_id).exists():
+                    return Response({"error": "Survey does not exist."}, status=status.HTTP_404_NOT_FOUND)
+                if not Question.objects.filter(pk=question_id).exists():
+                    return Response({"error": "Question does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-            serializer = self.get_serializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({"message": "Survey question added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                serializer = self.get_serializer(data={'survey': survey_id, 'question': question_id})
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response({"message": "Survey questions added successfully"}, status=status.HTTP_201_CREATED)
         except IntegrityError as e:
             return Response({'error': str(e)})
 

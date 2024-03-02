@@ -70,6 +70,8 @@ class SurveyQuestionSerializer(serializers.ModelSerializer):
             choices = QuestionChoice.objects.filter(question=question)
             question_data['choices'] = QuestionChoiceSerializer(choices, many=True).data
         return question_data
+
+    
         
 class SurveyQuestionAnswerSerializer(serializers.ModelSerializer):
     survey_question_text = serializers.CharField(source='survey_question.question.text', read_only=True)

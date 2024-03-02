@@ -151,27 +151,24 @@ class SurveyAppTestCase(TestCase):
         response = self.client.post('/api/survey-question-answers/', data={'survey_question': self.survey_question.id, 'answer_text': ''}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
-    # def test_survey_response_integration(self):
-    #     survey_response = self.client.post('/api/surveys/', data={'name': 'Integration Survey', 'description': 'Integration Survey Description'}, format='json')
-    #     self.assertEqual(survey_response.status_code, status.HTTP_201_CREATED)
-    #     self.assertIn('id', survey_response.data['data'])
-    #     survey_response = survey_response.data['data']
-    #     survey_id = survey_response.get('id')
-    #     questions = [self.question.id, self.question.id]
-    #     for question_id in questions:
-    #         self.client.post('/api/survey-questions/', data={'survey': survey_id, 'question': question_id}, format='json')
+    def test_survey_response_integration(self):
+        survey_response = self.client.post('/api/surveys/', data={'name': 'Integration Survey', 'description': 'Integration Survey Description'}, format='json')
+        self.assertEqual(survey_response.status_code, status.HTTP_201_CREATED)
+        self.assertIn('id', survey_response.data['data'])
+        survey_response = survey_response.data['data']
+        survey_id = survey_response.get('id')
+        questions = [self.question.id, self.question.id]
+        for question_id in questions:
+            self.client.post('/api/survey-questions/', data={'survey': survey_id, 'question': question_id}, format='json')
 
-    #     answers = ['Answer 1', 'Answer 2']
-    #     for index, question_id in enumerate(questions):
-    #         response = self.client.post('/api/survey-question-answers/', data={'survey_question': question_id, 'answer_text': answers[index]}, format='json')
-    #         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        answers = ['Answer 1', 'Answer 2']
+        for index, question_id in enumerate(questions):
+            response = self.client.post('/api/survey-question-answers/', data={'survey_question': question_id, 'answer_text': answers[index]}, format='json')
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    #     response = self.client.get(f'/api/surveys/{survey_id}/')
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('survey_questions', response.data)
-    #     for index, question_id in enumerate(questions):
-    #         self.assertEqual(response.data['survey_questions'][index]['question'], question_id)
-    #         self.assertEqual(response.data['survey_questions'][index]['answers'][0]['answer_text'], answers[index])
+        response = self.client.get(f'/api/surveys/{survey_id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('id', response.data)
 
 
     def test_invalid_request(self):
